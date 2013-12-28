@@ -50,10 +50,10 @@ exports.getForgeList = function(callback) {
                                     }
                                 });
                         }
-                        storage.push(forgever);
-                        console.log(forgever);
                     });
                 }
+                storage.push(forgever);
+                console.log(forgever);
             });
             callback(null, storage);
         }
