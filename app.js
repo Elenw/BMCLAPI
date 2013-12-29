@@ -3,11 +3,12 @@
  * Module dependencies.
  */
 
-var forgeWatcher = require('./modules/forgeWatcher');
 var express = require('express');
-var forge = require('./routes/forge');
 var http = require('http');
 var path = require('path');
+
+var forge = require('./routes/forge');
+var optifine = require('./routes/optifine');
 
 var app = express();
 
@@ -29,11 +30,14 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-forgeWatcher.init();
 
 app.get('/forge/versionlist', forge.forgelist);
 app.get('/forge/legacylist', forge.legacylist);
+app.get('/optifine/versionlist', optifine.versionList);
 
 http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+  console.log('bmclapi server listening on port ' + app.get('port'));
 });
+
+forge.init();
+optifine.init();

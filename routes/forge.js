@@ -21,3 +21,7 @@ exports.legacylist = function(req, res){
         }
     });
 };
+
+exports.init = function(){
+    forge.init();
+};
