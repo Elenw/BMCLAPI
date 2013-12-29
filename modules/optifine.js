@@ -48,36 +48,38 @@ var getOptifineList = function(callback) {
                     optifineVer.dl = versionDom.find('.downloadLineDownload a').attr('href');
                     optifineVer.mirror = versionDom.find('.downloadLineMirror a').attr('href');
                     optifineVer.date = versionDom.find('.downloadLineDate').text();
-                    request('http://optifine.net/' + optifineVer.mirror, {
-                        method: 'GET'
-                    }, function(err, res, body) {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            var dlpageDom = $(body);
-                            optifineVer.url = 'http://optifine.net/' + dlpageDom.find('#Download a').attr('href');
-                            storage.push(optifineVer);
-                            console.log('optifine' + aindex + '/' + dllDom.length);
-                            if (aindex == dllDom.length - 1) {
-                                optifineVersionModel.findOneAndUpdate({
-                                    id: 1
-                                }, {
-                                    index: JSON.stringify(storage)
-                                }, function(err, doc) {
-                                    if (err) {
-                                        console.log('save optifine list error:' + JSON.stringify(err));
-                                    } else {
-                                        if (!doc) {
-                                            var optifineVersion = new optifineVersionModel();
-                                            optifineVersion.index = JSON.stringify(storage);
-                                            optifineVersion.save();
+                    (function() {
+                        request('http://optifine.net/' + optifineVer.mirror, {
+                            method: 'GET'
+                        }, function(err, res, body) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                var dlpageDom = $(body);
+                                optifineVer.url = 'http://optifine.net/' + dlpageDom.find('#Download a').attr('href');
+                                storage.push(optifineVer);
+                                console.log('optifine' + aindex + '/' + dllDom.length);
+                                if (aindex == dllDom.length - 1) {
+                                    optifineVersionModel.findOneAndUpdate({
+                                        id: 1
+                                    }, {
+                                        index: JSON.stringify(storage)
+                                    }, function(err, doc) {
+                                        if (err) {
+                                            console.log('save optifine list error:' + JSON.stringify(err));
+                                        } else {
+                                            if (!doc) {
+                                                var optifineVersion = new optifineVersionModel();
+                                                optifineVersion.index = JSON.stringify(storage);
+                                                optifineVersion.save();
+                                            }
+                                            console.log('save optifine list success');
                                         }
-                                        console.log('save optifine list success');
-                                    }
-                                });
+                                    });
+                                }
                             }
-                        }
-                    });
+                        });
+                    })(optifineVer);
                 });
             });
         }
