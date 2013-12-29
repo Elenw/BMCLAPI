@@ -3,6 +3,7 @@
  * Module dependencies.
  */
 
+var forgeWatcher = require('./modules/forgeWatcher');
 var express = require('express');
 var forge = require('./routes/forge');
 var http = require('http');
@@ -27,6 +28,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
+
+forgeWatcher.init();
 
 app.get('/forge/versionlist', forge.forgelist);
 app.get('/forge/legacylist', forge.legacylist);

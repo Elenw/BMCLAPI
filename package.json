@@ -10,6 +10,7 @@
     "ejs": "0.8.5",
     "iconv-lite": "0.2.11",
     "cheerio": "0.12.4",
-    "request": "2.27.0"
+    "request": "2.27.0",
+    "mongoose": "3.8.1"
   }
 }
