@@ -48,13 +48,14 @@ var getOptifineList = function(callback) {
                     optifineVer.dl = versionDom.find('.downloadLineDownload a').attr('href');
                     optifineVer.mirror = versionDom.find('.downloadLineMirror a').attr('href');
                     optifineVer.date = versionDom.find('.downloadLineDate').text();
-                    (function() {
+                    var hhh = function(optifineVer) {
                         request('http://optifine.net/' + optifineVer.mirror, {
                             method: 'GET'
                         }, function(err, res, body) {
                             if (err) {
                                 console.log(err);
                             } else {
+                                console.log(optifineVer);
                                 var dlpageDom = $(body);
                                 optifineVer.url = 'http://optifine.net/' + dlpageDom.find('#Download a').attr('href');
                                 storage.push(optifineVer);
@@ -79,7 +80,8 @@ var getOptifineList = function(callback) {
                                 }
                             }
                         });
-                    })(optifineVer);
+                    };
+                    hhh(optifineVer);
                 });
             });
         }
