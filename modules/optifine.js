@@ -41,7 +41,8 @@ var getOptifineList = function(callback) {
             var storage = [];
             var dllDom = htmlDom.find('.downloadLine');
             dllDom.each(function(aindex) {
-                $(this).find('tr').each(function(index) {
+                var trDom = $(this).find('tr');
+                trDom.each(function(index) {
                     optifineVer = {};
                     var versionDom = $(this);
                     optifineVer.ver = versionDom.find('.downloadLineFile').text();
@@ -55,12 +56,11 @@ var getOptifineList = function(callback) {
                             if (err) {
                                 console.log(err);
                             } else {
-                                console.log(optifineVer);
                                 var dlpageDom = $(body);
                                 optifineVer.url = 'http://optifine.net/' + dlpageDom.find('#Download a').attr('href');
                                 storage.push(optifineVer);
-                                console.log('optifine' + aindex + '/' + dllDom.length);
-                                if (aindex == dllDom.length - 1) {
+                                // console.log('optifine' + aindex + '/' + dllDom.length + '     ' + index + '/' + trDom.length);
+                                if (aindex == dllDom.length - 1 && index == trDom.length - 1) {
                                     optifineVersionModel.findOneAndUpdate({
                                         id: 1
                                     }, {
