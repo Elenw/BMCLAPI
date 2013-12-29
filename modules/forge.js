@@ -1,5 +1,6 @@
 var request = require('request');
 var $ = require('cheerio').load();
+var regex = require('../libs/regex')
 
 exports.getForgeList = function(callback) {
     var storage = [];
@@ -12,7 +13,6 @@ exports.getForgeList = function(callback) {
             var htmlDom = $(body);
             var promo = htmlDom.find('#promotions_table');
             promo.find('tr').each(function(index) {
-                console.log(index);
                 var forgever = {};
                 $(this).find('td').each(function(index) {
                     switch (index) {
@@ -33,24 +33,25 @@ exports.getForgeList = function(callback) {
                                 var text = $(this).text();
                                 switch (text) {
                                     case 'Changelog':
-                                        forgever.changelog = $(this).attr('href');
+                                        forgever.changelog = regex.getRealUrl($(this).attr('href'));
                                         break;
                                     case 'Installer':
-                                        forgever.installer = $(this).attr('href');
+                                        forgever.installer = regex.getRealUrl($(this).attr('href'));
                                         break;
                                     case 'Javadoc':
-                                        forgever.javadoc = $(this).attr('href');
+                                        forgever.javadoc = regex.getRealUrl($(this).attr('href'));
                                         break;
                                     case 'Src':
-                                        forgever.src = $(this).attr('href');
+                                        forgever.src = regex.getRealUrl($(this).attr('href'));
                                         break;
                                     case 'Universal':
-                                        forgever.universal = $(this).attr('href');
+                                        forgever.universal = regex.getRealUrl($(this).attr('href'));
                                 }
                             });
                             break;
                     }
                 });
+                if (!forgever.ver) return;
                 storage.push(forgever);
 
                 var build = htmlDom.find('.builds');
@@ -74,24 +75,25 @@ exports.getForgeList = function(callback) {
                                         var text = $(this).text();
                                         switch (text) {
                                             case 'Changelog':
-                                                forgever.changelog = $(this).attr('href');
+                                                forgever.changelog = regex.getRealUrl($(this).attr('href'));
                                                 break;
                                             case 'Installer':
-                                                forgever.installer = $(this).attr('href');
+                                                forgever.installer = regex.getRealUrl($(this).attr('href'));
                                                 break;
                                             case 'Javadoc':
-                                                forgever.javadoc = $(this).attr('href');
+                                                forgever.javadoc = regex.getRealUrl($(this).attr('href'));
                                                 break;
                                             case 'Src':
-                                                forgever.src = $(this).attr('href');
+                                                forgever.src = regex.getRealUrl($(this).attr('href'));
                                                 break;
                                             case 'Universal':
-                                                forgever.universal = $(this).attr('href');
+                                                forgever.universal = regex.getRealUrl($(this).attr('href'));
                                         }
                                     });
                                     break;
                             }
                         });
+                        if (!forgever.ver) return;
                         storage.push(forgever);
                     });
                 });
@@ -112,7 +114,6 @@ exports.getLegacyList = function(callback) {
             var htmlDom = $(body);
             var promo = htmlDom.find('#promotions_table');
             promo.find('tr').each(function(index) {
-                if (index === 0) return;
                 var forgever = {};
                 $(this).find('td').each(function(index) {
                     switch (index) {
@@ -133,24 +134,25 @@ exports.getLegacyList = function(callback) {
                                 var text = $(this).text();
                                 switch (text) {
                                     case 'changelog':
-                                        forgever.changelog = $(this).attr('href');
+                                        forgever.changelog = regex.getRealUrl($(this).attr('href'));
                                         break;
                                     case 'installer':
-                                        forgever.installer = $(this).attr('href');
+                                        forgever.installer = regex.getRealUrl($(this).attr('href'));
                                         break;
                                     case 'javadoc':
-                                        forgever.javadoc = $(this).attr('href');
+                                        forgever.javadoc = regex.getRealUrl($(this).attr('href'));
                                         break;
                                     case 'src':
-                                        forgever.src = $(this).attr('href');
+                                        forgever.src = regex.getRealUrl($(this).attr('href'));
                                         break;
                                     case 'universal':
-                                        forgever.universal = $(this).attr('href');
+                                        forgever.universal = regex.getRealUrl($(this).attr('href'));
                                 }
                             });
                             break;
                     }
                 });
+                if (!forgever.ver) return;
                 storage.push(forgever);
 
                 var build = htmlDom.find('#all_builds');
@@ -173,19 +175,19 @@ exports.getLegacyList = function(callback) {
                                     var text = $(this).text();
                                     switch (text) {
                                         case 'changelog':
-                                            forgever.changelog = $(this).attr('href');
+                                            forgever.changelog = regex.getRealUrl($(this).attr('href'));
                                             break;
                                         case 'installer':
-                                            forgever.installer = $(this).attr('href');
+                                            forgever.installer = regex.getRealUrl($(this).attr('href'));
                                             break;
                                         case 'javadoc':
-                                            forgever.javadoc = $(this).attr('href');
+                                            forgever.javadoc = regex.getRealUrl($(this).attr('href'));
                                             break;
                                         case 'src':
-                                            forgever.src = $(this).attr('href');
+                                            forgever.src = regex.getRealUrl($(this).attr('href'));
                                             break;
                                         case 'universal':
-                                            forgever.universal = $(this).attr('href');
+                                            forgever.universal = regex.getRealUrl($(this).attr('href'));
                                     }
                                 });
                                 break;
