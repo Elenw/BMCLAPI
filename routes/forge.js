@@ -9,3 +9,13 @@ exports.forgelist = function(req, res){
         }
     });
 };
+
+exports.legacylist = function(req, res){
+    forge.getLegacyList(function(err, result){
+        if (err){
+            return res.send(err);
+        } else {
+            res.send(result);
+        }
+    });
+};
