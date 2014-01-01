@@ -65,7 +65,7 @@ var getForgeList = function() {
                             break;
                         case 1:
                             forgever.ver = $(this).text();
-                            if (!forgever.vername){
+                            if (!forgever.vername) {
                                 forgevername = forgever.ver;
                             }
                             break;
@@ -113,6 +113,9 @@ var getForgeList = function() {
                                 break;
                             case 1:
                                 forgever.mcver = $(this).text();
+                                if (!forgever.vername) {
+                                    forgevername = forgever.ver;
+                                }
                                 break;
                             case 2:
                                 forgever.releasetime = $(this).text();
@@ -184,6 +187,9 @@ var getLegacyList = function() {
                             break;
                         case 1:
                             forgever.ver = $(this).text();
+                            if (!forgever.vername) {
+                                forgevername = forgever.ver;
+                            }
                             break;
                         case 2:
                             forgever.mcver = $(this).text();
@@ -228,6 +234,9 @@ var getLegacyList = function() {
                             break;
                         case 1:
                             forgever.mcver = $(this).text();
+                            if (!forgever.vername) {
+                                forgevername = forgever.ver;
+                            }
                             break;
                         case 2:
                             forgever.releasetime = $(this).text();
