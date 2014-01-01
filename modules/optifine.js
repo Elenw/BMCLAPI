@@ -47,7 +47,7 @@ var getOptifineList = function(callback) {
                     var versionDom = $(this);
                     optifineVer.ver = versionDom.find('.downloadLineFile').text();
                     optifineVer.dl = versionDom.find('.downloadLineDownload a').attr('href');
-                    optifineVer.mirror = versionDom.find('.downloadLineMirror a').attr('href');
+                    optifineVer.mirror = 'http://optifine.net/' + versionDom.find('.downloadLineMirror a').attr('href');
                     optifineVer.date = versionDom.find('.downloadLineDate').text();
                     var hhh = function(optifineVer) {
                         request('http://optifine.net/' + optifineVer.mirror, {
