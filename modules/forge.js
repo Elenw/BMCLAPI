@@ -65,6 +65,9 @@ var getForgeList = function() {
                             break;
                         case 1:
                             forgever.ver = $(this).text();
+                            if (!forgever.vername){
+                                forgevername = forgever.ver;
+                            }
                             break;
                         case 2:
                             forgever.mcver = $(this).text();
