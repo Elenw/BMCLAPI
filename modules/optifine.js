@@ -29,7 +29,20 @@ exports.init = function() {
     setInterval(getOptifineList(), 24 * 60 * 60 * 1000);
 };
 
-var getOptifineList = function(callback) {
+exports.getOptifine = function(ver, callback) {
+    request('http://optifine.net/adloadx.php?f=' + ver + '.jar', {
+        method: 'GET'
+    }, function(err, res, body) {
+        if (err) {
+            callback(err);
+        } else {
+            var dlpageDom = $(body);
+            callback(null, 'http://optifine.net/' + dlpageDom.find('#Download a').attr('href'));
+        }
+    });
+};
+
+var getOptifineList = function() {
     console.log('start get optifine list');
     request('http://optifine.net/downloads.php', {
         method: 'GET'
