@@ -20,7 +20,7 @@ exports.getOptifine = function(req, res) {
     if (!ver) {
         res.send(403, 'Access Denied');
     }
-    ver = ver.replace('/ /g','_');
+    ver = ver.replace(/[ ]/g, '_');
     optifine.getOptifine(ver, function(err, result) {
         if (err) {
             res.send(500, err);
