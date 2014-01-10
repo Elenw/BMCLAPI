@@ -36,6 +36,7 @@ app.get('/forge/legacylist', forge.legacylist);
 app.get('/optifine/versionlist', optifine.versionList);
 app.get('/optifine/:version', optifine.getOptifine);
 app.get('/mcversion', mcversion.getList);
+app.get('/mcversion/versions.json', mcversion.getList);
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log('bmclapi server listening on port ' + app.get('port'));
