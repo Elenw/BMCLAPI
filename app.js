@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -9,6 +8,7 @@ var path = require('path');
 
 var forge = require('./routes/forge');
 var optifine = require('./routes/optifine');
+var mcversion = require('./routes/mcversion');
 
 var app = express();
 
@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+    app.use(express.errorHandler());
 }
 
 
@@ -35,10 +35,12 @@ app.get('/forge/versionlist', forge.forgelist);
 app.get('/forge/legacylist', forge.legacylist);
 app.get('/optifine/versionlist', optifine.versionList);
 app.get('/optifine/:version', optifine.getOptifine);
+app.get('/mcversion', mcversion.getList);
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('bmclapi server listening on port ' + app.get('port'));
+http.createServer(app).listen(app.get('port'), function() {
+    console.log('bmclapi server listening on port ' + app.get('port'));
 });
 
 forge.init();
 optifine.init();
+mcversion.init();

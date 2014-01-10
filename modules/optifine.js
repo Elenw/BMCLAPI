@@ -62,39 +62,25 @@ var getOptifineList = function() {
                     optifineVer.dl = versionDom.find('.downloadLineDownload a').attr('href');
                     optifineVer.mirror = 'http://optifine.net/' + versionDom.find('.downloadLineMirror a').attr('href');
                     optifineVer.date = versionDom.find('.downloadLineDate').text();
-                    var hhh = function(optifineVer) {
-                        request('http://optifine.net/' + optifineVer.mirror, {
-                            method: 'GET'
-                        }, function(err, res, body) {
+                    storage.push(optifineVer);
+                    if (aindex == dllDom.length - 1 && index == trDom.length - 1) {
+                        optifineVersionModel.findOneAndUpdate({
+                            id: 1
+                        }, {
+                            index: JSON.stringify(storage)
+                        }, function(err, doc) {
                             if (err) {
-                                console.log(err);
+                                console.log('save optifine list error:' + JSON.stringify(err));
                             } else {
-                                var dlpageDom = $(body);
-                                optifineVer.url = 'http://optifine.net/' + dlpageDom.find('#Download a').attr('href');
-                                storage.push(optifineVer);
-                                // console.log('optifine' + aindex + '/' + dllDom.length + '     ' + index + '/' + trDom.length);
-                                if (aindex == dllDom.length - 1 && index == trDom.length - 1) {
-                                    optifineVersionModel.findOneAndUpdate({
-                                        id: 1
-                                    }, {
-                                        index: JSON.stringify(storage)
-                                    }, function(err, doc) {
-                                        if (err) {
-                                            console.log('save optifine list error:' + JSON.stringify(err));
-                                        } else {
-                                            if (!doc) {
-                                                var optifineVersion = new optifineVersionModel();
-                                                optifineVersion.index = JSON.stringify(storage);
-                                                optifineVersion.save();
-                                            }
-                                            console.log('save optifine list success');
-                                        }
-                                    });
+                                if (!doc) {
+                                    var optifineVersion = new optifineVersionModel();
+                                    optifineVersion.index = JSON.stringify(storage);
+                                    optifineVersion.save();
                                 }
+                                console.log('save optifine list success');
                             }
                         });
-                    };
-                    hhh(optifineVer);
+                    }
                 });
             });
         }

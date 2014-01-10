@@ -153,14 +153,14 @@ var getForgeList = function() {
                 index: JSON.stringify(storage)
             }, function(err, doc) {
                 if (err) {
-                    console.log('save index list error:' + JSON.stringify(err));
+                    console.log('save forge index list error:' + JSON.stringify(err));
                 } else {
                     if (!doc) {
                         var forgeVersion = new forgeVersionModel();
                         forgeVersion.index = JSON.stringify(storage);
                         forgeVersion.save();
                     }
-                    console.log('save index list success');
+                    console.log('save forge index list success');
                 }
             });
         }
@@ -273,14 +273,14 @@ var getLegacyList = function() {
                 legacy: JSON.stringify(storage)
             }, function(err, doc) {
                 if (err) {
-                    console.log('save legacy list error:' + JSON.stringify(err));
+                    console.log('save forge legacy list error:' + JSON.stringify(err));
                 } else {
                     if (!doc) {
                         var forgeVersion = new forgeVersionModel();
                         forgeVersion.legacy = JSON.stringify(storage);
                         forgeVersion.save();
                     }
-                    console.log('save legacy list success');
+                    console.log('save forge legacy list success');
                 }
             });
         }
