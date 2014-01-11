@@ -4,6 +4,8 @@ var fs = require('fs');
 var path = require('path');
 var mcVersionPath = path.join(__dirname, '../public/mcversion/');
 var util = require('../libs/util');
+var MojangDownloadUrl = 'http://s3.amazonaws.com/Minecraft.Download/versions/';
+
 
 var mcVersionSchema = new mongoose.Schema({
     id: {
@@ -14,6 +16,8 @@ var mcVersionSchema = new mongoose.Schema({
 });
 
 var mcVersionModel = mongoose.model('mcversion', mcVersionSchema);
+
+var mclibraries = require('./mclibraries');
 
 exports.getList = function(callback) {
     mcVersionModel.findOne({
@@ -32,9 +36,13 @@ exports.init = function() {
     setInterval(getVersionList, 24 * 60 * 60 * 1000);
 };
 
+exports.refresh = function() {
+    getVersionList();
+};
+
 var getVersionList = function() {
     console.log('start get mc version');
-    request('https://s3.amazonaws.com/Minecraft.Download/versions/versions.json', {
+    request(MojangDownloadUrl + 'versions.json', {
         method: 'GET'
     }, function(err, res, body) {
         if (err) {
@@ -58,7 +66,6 @@ var getVersionList = function() {
             });
             console.log('checking for mc version file');
             var mcVersionList = JSON.parse(body).versions;
-
             var fsreaddirCallback = function(id) {
                 return function(exists) {
                     if (!exists) {
@@ -67,14 +74,16 @@ var getVersionList = function() {
                             if (err) {
                                 console.error('create ' + id + 'dir error :' + JSON.stringify(err));
                             } else {
-                                request('https://s3.amazonaws.com/Minecraft.Download/versions/' + id + '/' + id + '.json', function(err, res, body) {
+                                request(MojangDownloadUrl + id + '/' + id + '.json', function(err, res, body) {
                                     if (err) {
                                         console.error('download ' + id + 'error:' + JSON.stringify(err));
                                     } else {
                                         console.log(id + ' json download finish');
+                                        console.log('check for libraries');
+                                        mclibraries.checkForUpdate(id);
                                     }
                                 }).pipe(fs.createWriteStream(mcVersionPath + id + '/' + id + '.json'));
-                                request('https://s3.amazonaws.com/Minecraft.Download/versions/' + id + '/' + id + '.jar', function(err, res, body) {
+                                request(MojangDownloadUrl + id + '/' + id + '.jar', function(err, res, body) {
                                     if (err) {
                                         console.error('download ' + id + 'error:' + JSON.stringify(err));
                                     } else {
@@ -90,7 +99,7 @@ var getVersionList = function() {
 
             for (var i in mcVersionList) {
                 var id = mcVersionList[i].id;
-                fs.exists(mcVersionPath + id, fsreaddirCallback(id));
+                util.exists(mcVersionPath + id, fsreaddirCallback(id));
             }
             fs.readdir(mcVersionPath, function(err, files) {
                 if (err) {

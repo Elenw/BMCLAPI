@@ -14,3 +14,8 @@ exports.getList = function(req, res) {
 exports.init = function() {
     mcversion.init();
 };
+
+exports.refresh = function(req, res) {
+    mcversion.refresh();
+    res.send('Working');
+};

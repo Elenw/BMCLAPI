@@ -23,3 +23,35 @@ exports.rmdirrf = function(path) {
         fs.rmdirSync(path);
     }
 };
+
+exports.getLibPath = function(lib) {
+    var split = lib.name.split(':');
+    if (split.length != 3) {
+        return false;
+    }
+    var libp = split[0].replace(/\./g, '/');
+    libp += '/';
+    libp += split[1];
+    libp += '/';
+    libp += split[2];
+    libp += '/';
+    libp += split[1];
+    libp += '-';
+    libp += split[2];
+    libp += '.jar';
+    return libp;
+};
+
+exports.exists = function(path, callback) {
+    fs.stat(path, function(err, stat) {
+        if (err) {
+            callback(false);
+        } else {
+            if (stat.size !== 0) {
+                callback(true);
+            } else {
+                callback(false);
+            }
+        }
+    });
+};
